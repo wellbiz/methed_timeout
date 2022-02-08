@@ -1,20 +1,31 @@
-import createElement from "./module/createElements.js";
+import createElement from './module/createElements.js';
+import {debounce,throttle} from './module/delay.js'
 
-const input = createElement("input", {
-  type: "text",
-  name: "input",
-  id: "input",
+const input = createElement('input', {
+    type: 'text',
+    name: 'input',
+    id: 'input',
 });
 
-const p = createElement("p", {});
+const p = createElement('p', {});
 
-const body = document.querySelector("body");
+const body = document.querySelector('body');
 
 body.append(input, p);
 const showText = () => {
-  setTimeout(() => {
-    p.textContent = input.value;
-  }, 300);
+    setTimeout(() => {
+        p.textContent = input.value;
+    }, 300);
 };
 
-input.addEventListener("blur", showText);
+input.addEventListener(
+    'input',
+    throttle(
+        debounce(() => {
+            p.textContent = input.value;
+        }, 300),
+        50
+    )
+);
+
+
